@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: calapp
+  template:
+    metadata:
+      labels:
+        app: calapp
+    spec:
+      containers:
+        - name: empapp
+          image: rgupta00/calapp:latest
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: calapp-service
+spec:
+  selector:
+    app: calapp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer

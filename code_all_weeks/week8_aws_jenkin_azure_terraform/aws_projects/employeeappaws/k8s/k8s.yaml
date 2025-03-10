@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: empapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: empapp
+  template:
+    metadata:
+      labels:
+        app: empapp
+    spec:
+      containers:
+        - name: empapp
+          image: 904233120381.dkr.ecr.ap-south-1.amazonaws.com/empapp:latest
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: newapp-service
+spec:
+  selector:
+    app: empapp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
